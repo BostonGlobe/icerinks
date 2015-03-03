@@ -1,0 +1,10 @@
+.sass-cache
+.tmp
+/node_modules
+PROD.jpt
+git.sh
+index.html
+globeproject.sublime-workspace
+data/icerinks.html
+data/icerinks_files
+parts/globe
