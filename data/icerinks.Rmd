@@ -14,7 +14,7 @@ library(ggplot2)
 library(scales)
 
 # Read csv.
-icerinks <- read.csv('../Public Ice Time at Rinks - Sheet1.csv', strip.white=T, stringsAsFactors=F, row.names = NULL)
+icerinks <- read.csv('../data.csv', strip.white=T, stringsAsFactors=F, row.names = NULL)
 ```
 
 The following is an analysis of the ice rinks data. It's not meant for public consumption, at least not at the moment.
@@ -28,7 +28,7 @@ A note on the format: each question is followed by the R code that generates the
 # Convert hours.each.week to seconds
 data <- icerinks %>%
   mutate(seconds = as.numeric(seconds(as.duration(hm(hours.each.week))))) %>%
-  select(Town,seconds,DCR)
+  select(Town,seconds,Status)
 
 # Order Town factor by seconds
 data$Town <- factor(data$Town, levels = data$Town[order(-data$seconds)])
@@ -38,7 +38,7 @@ time_formatter <- function(x) {
   lab <- (day(seconds_to_period(x)) * 24) + hour(seconds_to_period(x))
 }
 
-ggplot(data, aes(Town,seconds,fill=DCR)) +
+ggplot(data, aes(Town,seconds,fill=Status)) +
   theme_bw() +
   geom_bar(stat='identity') +
   geom_hline(yintercept=16*60*60) +
@@ -51,11 +51,11 @@ ggplot(data, aes(Town,seconds,fill=DCR)) +
 
 
 ***
-#### What are the median public hours by DCR status?
+#### What are the median public hours by status?
 ```{r, results='asis', fig.width=12, fig.height=7, warning=FALSE, message=FALSE}
 data <- icerinks %>%
   mutate(seconds = as.numeric(seconds(as.duration(hm(hours.each.week))))) %>%
-  group_by(DCR) %>%
+  group_by(Status) %>%
   summarise(median.hours = median(seconds)/3600)
 
 knitr::kable(data)
