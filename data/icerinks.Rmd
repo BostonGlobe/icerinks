@@ -14,7 +14,7 @@ library(ggplot2)
 library(scales)
 
 # Read csv.
-icerinks <- read.csv('../latestv3.csv', strip.white=T, stringsAsFactors=F, row.names = NULL) %>%
+icerinks <- read.csv('../data.csv', strip.white=T, stringsAsFactors=F, row.names = NULL) %>%
   mutate(
     hours = hm(Hours)/hours(1)
   )

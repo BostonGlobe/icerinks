@@ -20,6 +20,8 @@ $('.icerinks', master).html(_.templates.icerinks({
 				hours: +hoursParts[0] + +(hoursParts[1]/60)
 			};
 		})
+		.sortBy('icerink')
+		.reverse()
 		.sortBy('hours')
 		.reverse()
 		.value()
