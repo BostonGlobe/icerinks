@@ -1,0 +1,28 @@
+<ul class='names'>
+
+	<% icerinks.forEach(function(icerink, index, array) { %>
+
+		<li>
+			<div><span class='name'><%= icerink.icerink %></span><span class='equalizer'>&nbsp;</span></div>
+		</li>
+		
+	<%}) %>
+
+</ul>
+
+<ul class='bars'>
+
+	<% icerinks.forEach(function(icerink, index, array) { %>
+
+		<li class='<%= icerink.status %>'>
+			<div class='bar-wrapper' style='width: <%= 100*icerink.hours/array[0].hours %>%'>
+				<span>&nbsp;</span><span class='<%= index ? "outside" : "inside" %>'><%= icerink.hours % 1 ? icerink.hours.toFixed(1) : icerink.hours %><%= index ? '' : ' hours per week' %></span>
+			</div>
+		</li>
+		
+	<%}) %>
+
+</ul>
+
+
+

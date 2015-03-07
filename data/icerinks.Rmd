@@ -14,8 +14,10 @@ library(ggplot2)
 library(scales)
 
 # Read csv.
-icerinks <- read.csv('../data.csv', strip.white=T, stringsAsFactors=F, row.names = NULL) %>%
-  mutate(hours = hm(hours.each.week)/hours(1))
+icerinks <- read.csv('../latestv3.csv', strip.white=T, stringsAsFactors=F, row.names = NULL) %>%
+  mutate(
+    hours = hm(Hours)/hours(1)
+  )
 ```
 
 The following is an analysis of the ice rinks data. It's not meant for public consumption, at least not at the moment.

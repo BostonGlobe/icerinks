@@ -1,3 +1,102 @@
+$green:	#9dba73;
+$gold: #faba54;
+$orange: #f49457;
+
 .article-graphic.graphic {
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+
+	.inline-graphic-hed {
+		font-family: $sansSerifStrong;
+		@include adjust-font-size-to($s5);
+		@include adjust-leading-to(1);
+	}
+
+	.inline-graphic-subhed {
+		@include rhythm(1/4, 0, 0, 1/2);
+		font-family: $sansSerif;
+		@include adjust-font-size-to($s3p5);
+		@include adjust-leading-to(1);
+
+		span {
+			display: inline-block;
+			padding-left: 0.25em;
+			padding-right: 0.25em;
+		}
+
+		.DCR {
+			background: $gold;
+		}
+		.Town {
+			background: $orange;
+		}
+		.Private {
+			background: $green;
+		}
+
+	}
+
+	.icerinks {
+
+		font-family: $sansSerif;
+		@include adjust-font-size-to($s3p5);
+		@include adjust-leading-to(1);
+		width: 100%;
+		overflow: hidden;
+
+		.names {
+			float: left;
+
+			li {
+				@include rhythm(1/4, 0, 0, 1/4);
+
+				text-align: right;
+
+				span.equalizer {
+					font-family: $sansSerifStrong;
+				}
+			}
+		}
+
+		.bars {
+			overflow: hidden;
+
+			li {
+				@include rhythm(1/4, 0, 0, 1/4);
+				text-align: right;
+				position: relative;
+
+				.bar-wrapper {
+
+					position: relative;
+
+					span {
+						font-family: $sansSerifStrong;
+						padding-right: 0.25em;
+					}
+
+					span.outside {
+						position: absolute;
+						padding-left: 0.25em;
+					}
+				}
+
+				&.DCR .bar-wrapper {
+					background: $gold;
+				}
+				&.Private .bar-wrapper {
+					background: $green;
+				}
+				&.Town .bar-wrapper {
+					background: $orange;
+				}
+			}
+
+		}
+
+	}
 	
 }
