@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Gabriel Florit" />
+
+
+<title>icerinks</title>
+
+<script src="icerinks_files/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="icerinks_files/bootstrap-3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<script src="icerinks_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="icerinks_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="icerinks_files/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="icerinks_files/highlight/default.css"
+      type="text/css" />
+<script src="icerinks_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+
+<div id="header">
+<h1 class="title">icerinks</h1>
+<h4 class="author"><em>Gabriel Florit</em></h4>
+</div>
+
+
+<p>The following is an analysis of the ice rinks data. It’s not meant for public consumption, at least not at the moment.</p>
+<p>A note on the format: each question is followed by the R code that generates the answer. This is also known as <strong>reproducible research</strong>, a practice that’s slowly being adopted by newspapers (e.g. <a href="https://github.com/fivethirtyeight/data">538</a>, <a href="https://github.com/theupshot">The Upshot</a>). From <a href="http://en.wikipedia.org/wiki/Reproducibility#Reproducible_research">wikipedia</a>: “The term reproducible research refers to the idea that the ultimate product of academic research is the paper along with the full computational environment used to produce the results in the paper such as the code, data, etc. that can be used to reproduce the results and create new work based on the research.”</p>
+<hr />
+<div id="can-we-plot-the-rinks-by-total-public-hours" class="section level4">
+<h4>Can we plot the rinks by total public hours?</h4>
+<pre class="r"><code># Convert hours.each.week to hours
+data &lt;- icerinks %&gt;%
+  select(Town,hours,Status) %&gt;%
+  arrange(desc(hours))
+
+# Order Town factor by hours
+data$Town &lt;- factor(data$Town, levels = data$Town[order(-data$hours)])
+
+ggplot(data, aes(Town,hours,fill=Status)) +
+  theme_bw() +
+  geom_bar(stat=&#39;identity&#39;) +
+  geom_hline(yintercept=16) +
+  annotate(&quot;text&quot;, label = &#39;Rinks must be open to the public at least 16 hours per week&#39;, x = 1, y = 16.25, size = 5, hjust=0, vjust=0) +
+  ylab(&#39;Public hours per week&#39;) +
+  ggtitle(&#39;Ice rinks weekly public hours&#39;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="icerinks_files/figure-html/unnamed-chunk-2-1.png" title="" alt="" width="1152" /></p>
+<pre class="r"><code># Export data
+write.csv(data, &#39;../output.csv&#39;)</code></pre>
+<hr />
+</div>
+<div id="what-are-the-median-public-hours-by-status" class="section level4">
+<h4>What are the median public hours by status?</h4>
+<pre class="r"><code>data &lt;- icerinks %&gt;%
+  group_by(Status == &#39;DCR&#39;) %&gt;%
+  summarise(
+    count = n(),
+    mean.hours = mean(hours),
+    median.hours = median(hours)
+  )
+
+knitr::kable(data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Status == “DCR”</th>
+<th align="right">count</th>
+<th align="right">mean.hours</th>
+<th align="right">median.hours</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">31</td>
+<td align="right">12.51882</td>
+<td align="right">12.50</td>
+</tr>
+<tr class="even">
+<td align="left">TRUE</td>
+<td align="right">8</td>
+<td align="right">19.87500</td>
+<td align="right">12.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
